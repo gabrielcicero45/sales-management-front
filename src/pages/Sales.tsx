@@ -10,11 +10,13 @@ import {
 import { Product, Sale, SaleProduct } from "@/types";
 import { createSale, fetchProducts, fetchSales } from "@/services/api";
 import ProductCard from "@/components/product-card";
+import { useNavigate } from "react-router-dom";
 
 const Sales = () => {
   const [sales, setSales] = useState<Sale[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedProducts, setSelectedProducts] = useState<SaleProduct[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -72,6 +74,7 @@ const Sales = () => {
 
   return (
     <div className="p-4">
+      <Button onClick={() => { navigate("/purchases") }}>Ir para as vendas</Button>
       <h2 className="text-xl font-bold mb-4">Vendas</h2>
 
       <div className=" flex mb-4">

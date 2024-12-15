@@ -22,6 +22,7 @@ import {
 } from "@/services/api";
 import ProductCard from "@/components/product-card";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useNavigate } from "react-router-dom";
 
 const Purchases = () => {
   const [sales, setSales] = useState<Sale[]>([]);
@@ -34,7 +35,8 @@ const Purchases = () => {
     []
   );
   const [selectedSale, setSelectedSale] = useState<number | null>(null);
-
+  const navigate = useNavigate();
+  
   useEffect(() => {
     const loadProducts = async () => {
       try {
@@ -101,6 +103,7 @@ const Purchases = () => {
 
   return (
     <div className="p-4">
+        <Button onClick={() => { navigate("/sales") }}>Ir para as compras</Button>
       <h2 className="text-xl font-bold mb-4">Compras</h2>
 
       <div className="flex mb-4">
