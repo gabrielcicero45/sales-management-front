@@ -5,12 +5,14 @@ import {
   TableBody,
   TableCell,
   TableHead,
+  TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import {
   Product,
   Purchase,
   PurchaseProduct,
+  Sale,
   SalesProductDemand,
 } from "@/types";
 import {
@@ -40,6 +42,8 @@ const Purchases = () => {
   useEffect(() => {
     const loadProducts = async () => {
       try {
+        handlePurchases();
+        handleProductDemands();
         const data = await fetchProducts();
         const sales = await fetchSales();
         setSales(sales);
@@ -103,7 +107,7 @@ const Purchases = () => {
 
   return (
     <div className="p-4">
-        <Button onClick={() => { navigate("/sales") }}>Ir para as compras</Button>
+        <Button onClick={() => { navigate("/sales") }}>Ir para as vendas</Button>
       <h2 className="text-xl font-bold mb-4">Compras</h2>
 
       <div className="flex mb-4">
@@ -132,19 +136,16 @@ const Purchases = () => {
         )}
       </div>
 
-      <Button onClick={handlePurchases}>Carregar Compras</Button>
-      <Button onClick={handleProductDemands}>Carregar Demanda</Button>
-
       <h3 className="text-lg font-bold mt-4">Demanda de Produtos</h3>
       <Table className="mt-4">
-        <TableHead>
+        <TableHeader>
           <TableRow>
-            <TableCell>Produto</TableCell>
-            <TableCell>Quantidade Necessária</TableCell>
-            <TableCell>Quantidade Restante</TableCell>
-            <TableCell>Vendas</TableCell>
+            <TableHead>Produto</TableHead>
+            <TableHead>Quantidade Necessária</TableHead>
+            <TableHead>Quantidade Restante</TableHead>
+            <TableHead>Vendas</TableHead>
           </TableRow>
-        </TableHead>
+        </TableHeader>
         <TableBody>
           {productDemands.map((productDemand) => (
             <TableRow key={productDemand.product.id}>
@@ -159,12 +160,12 @@ const Purchases = () => {
 
       <h3 className="text-lg font-bold mt-4">Histórico de Vendas</h3>
       <Table className="mt-4">
-        <TableHead>
+        <TableHeader>
           <TableRow>
-            <TableCell>Produtos</TableCell>
-            <TableCell>Data</TableCell>
+            <TableHead>Produtos</TableHead>
+            <TableHead>Data</TableHead>
           </TableRow>
-        </TableHead>
+        </TableHeader>
         <TableBody>
           {sales.map((sale) => (
             <TableRow key={sale.id}>
@@ -173,7 +174,7 @@ const Purchases = () => {
                   checked={selectedSale === sale.id}
                   onCheckedChange={() =>
                     setSelectedSale((prev) =>
-                      prev === sale.od ? null : sale.id
+                      prev === sale.id ? null : sale.id
                     )
                   }
                 />
@@ -199,12 +200,13 @@ const Purchases = () => {
 
       <h3 className="text-lg font-bold mt-4">Histórico de Compras</h3>
       <Table className="mt-4">
-        <TableHead>
+        <TableHeader>
           <TableRow>
-            <TableCell>Produtos</TableCell>
-            <TableCell>Data</TableCell>
+            <TableHead>Produtos</TableHead>
+            <TableHead>ID da Venda</TableHead>
+            <TableHead>Data</TableHead>
           </TableRow>
-        </TableHead>
+        </TableHeader>
         <TableBody>
           {purchases.map((purchase) => (
             <TableRow key={purchase.id}>
@@ -222,6 +224,7 @@ const Purchases = () => {
                   ))}
                 </ul>
               </TableCell>
+              <TableCell>{purchase.saleId}</TableCell>
               <TableCell>
                 {new Date(purchase.createdAt).toLocaleString()}
               </TableCell>

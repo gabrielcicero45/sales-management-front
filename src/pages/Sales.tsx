@@ -5,6 +5,7 @@ import {
   TableBody,
   TableCell,
   TableHead,
+  TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { Product, Sale, SaleProduct } from "@/types";
@@ -21,6 +22,7 @@ const Sales = () => {
   useEffect(() => {
     const loadProducts = async () => {
       try {
+        handleSales()
         const data = await fetchProducts();
         setProducts(data);
       } catch (error) {
@@ -74,7 +76,7 @@ const Sales = () => {
 
   return (
     <div className="p-4">
-      <Button onClick={() => { navigate("/purchases") }}>Ir para as vendas</Button>
+      <Button onClick={() => { navigate("/purchases") }}>Ir para as compras</Button>
       <h2 className="text-xl font-bold mb-4">Vendas</h2>
 
       <div className=" flex mb-4">
@@ -103,16 +105,14 @@ const Sales = () => {
         )}
       </div>
 
-      <Button onClick={handleSales}>Carregar Vendas</Button>
-
       <h3 className="text-lg font-bold mt-4">Histórico de Vendas</h3>
       <Table className="mt-4">
-        <TableHead>
+        <TableHeader>
           <TableRow>
-            <TableCell>Produtos</TableCell>
-            <TableCell>Data</TableCell>
+            <TableHead>Produtos</TableHead>
+            <TableHead>Data</TableHead>
           </TableRow>
-        </TableHead>
+        </TableHeader>
         <TableBody>
           {sales.map((sale) => (
             <TableRow key={sale.id}>

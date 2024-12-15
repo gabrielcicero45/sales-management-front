@@ -2,8 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { useState } from "react";
+import { Product } from "@/types";
 
-const ProductCard = ({ product, onAddProduct }) => {
+const ProductCard = ({ product, onAddProduct }: {product: Product, onAddProduct: (productId: number, quantity: number)=> void;}) => {
   const [quantity, setQuantity] = useState(0);
 
   const handleAddProduct = () => {

@@ -35,6 +35,7 @@ export type PurchaseProduct = {
 
 export type Purchase = {
   id: number;
+  saleId: number;
   products: PurchaseProduct[];
   createdAt: string;
 };
