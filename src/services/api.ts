@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Product, Sale, SaleProduct, SalesProductDemand } from "@/types";
+import { Product, Purchase, Sale, SaleProduct, SalesProductDemand } from "@/types";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -40,5 +40,28 @@ export const createSale = async (selectedProducts: SaleProduct[]) => {
   };
 
   const response = await api.post("/sales", payload);
+  return response.data;
+};
+
+export const fetchPurchases = async (): Promise<Purchase[]> => {
+  const response = await api.get("/purchases");
+  return response.data;
+};
+
+
+export const createPurchase = async (selectedProducts: { productId: number; quantity: number }[], saleId: number | null) => {
+  if (saleId === null) {
+    throw new Error("Seleciona uma compra.");
+  }
+  if (selectedProducts.length === 0) {
+    throw new Error("Adicione pelo menos um produto à compra.");
+  }
+
+  const payload = {
+    saleId,
+    products: selectedProducts,
+  };
+
+  const response = await api.post("/purchases", payload);
   return response.data;
 };

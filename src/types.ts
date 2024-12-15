@@ -21,5 +21,20 @@ export type Product = {
 export type SalesProductDemand = {
   product: Product;
   totalQuantitySold: number;
+  totalQuantityMissing: number;
   totalSales: number;
+};
+
+export type PurchaseProduct = {
+  id: number;
+  product: Product;
+  purchaseId: number;
+  productId: number;
+  quantity: number;
+};
+
+export type Purchase = {
+  id: number;
+  products: PurchaseProduct[];
+  createdAt: string;
 };

@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
-import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -8,18 +7,14 @@ import {
   TableHead,
   TableRow,
 } from "@/components/ui/table";
-import { Card } from "@/components/ui/card";
-import { Product, Sale, SaleProduct, SalesProductDemand } from "@/types";
-import { createSale, fetchProducts, fetchProductsSales, fetchSales } from "@/services/api";
+import { Product, Sale, SaleProduct } from "@/types";
+import { createSale, fetchProducts, fetchSales } from "@/services/api";
+import ProductCard from "@/components/product-card";
 
 const Sales = () => {
   const [sales, setSales] = useState<Sale[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
-  const [productSalesDemand, setProductSalesDemand] = useState<
-    SalesProductDemand[]
-  >([]);
   const [selectedProducts, setSelectedProducts] = useState<SaleProduct[]>([]);
-  const [quantity, setQuantity] = useState(0);
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -45,7 +40,7 @@ const Sales = () => {
     }
   };
 
-  const addProductToSale = (productId: number) => {
+  const addProductToSale = (productId: number, quantity: number) => {
     if (!productId || quantity <= 0) {
       alert("Selecione um produto e insira uma quantidade válida.");
       return;
@@ -63,18 +58,7 @@ const Sales = () => {
     };
 
     setSelectedProducts((prev) => [...prev, newProduct]);
-    setQuantity(0);
   };
-
-  const handleSalesProductDemand = async () => {
-    try{
-        const productSaleDemand = await fetchProductsSales()
-        setProductSalesDemand(productSaleDemand);
-    }
-    catch(error){
-        console.error(error);
-    }
-  }
 
   const handleSales= async () => {
     try{
@@ -92,23 +76,7 @@ const Sales = () => {
 
       <div className=" flex mb-4">
         {products.map((product) => (
-          <Card key={product.id} className="p-4 mx-4">
-            {product.name}
-            <Input
-              className="mr-2 my-4"
-              type="number"
-              placeholder="Quantidade"
-              value={quantity}
-              onChange={(e) => setQuantity(Number(e.target.value))}
-            />
-            <Button
-              variant="default"
-              onClick={() => addProductToSale(product.id)}
-              className="my-4"
-            >
-              Adicionar Produto
-            </Button>
-          </Card>
+          <ProductCard product={product} onAddProduct={addProductToSale}/>
         ))}
       </div>
 
@@ -133,27 +101,6 @@ const Sales = () => {
       </div>
 
       <Button onClick={handleSales}>Carregar Vendas</Button>
-      <Button onClick={handleSalesProductDemand}>Carregar Demanda</Button>
-
-      <h3 className="text-lg font-bold mt-4">Demanda de Produtos</h3>
-      <Table className="mt-4">
-        <TableHead>
-          <TableRow>
-            <TableCell>Produto</TableCell>
-            <TableCell>Quantidade Vendida</TableCell>
-            <TableCell>Total de Vendas</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {productSalesDemand.map((productDemand) => (
-            <TableRow key={productDemand.product.id}>
-              <TableCell>{productDemand.product.name}</TableCell>
-              <TableCell>{productDemand.totalQuantitySold}</TableCell>
-              <TableCell>{productDemand.totalSales}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
 
       <h3 className="text-lg font-bold mt-4">Histórico de Vendas</h3>
       <Table className="mt-4">

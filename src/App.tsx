@@ -1,7 +1,10 @@
+import Purchases from "./pages/Purchases";
 import Sales from "./pages/Sales";
 
 function App() {
-  return <Sales />;
+  return <>
+  <Purchases/>
+  </>;
 }
 
 export default App;
