@@ -162,6 +162,7 @@ const Purchases = () => {
       <Table className="mt-4">
         <TableHeader>
           <TableRow>
+            <TableHead>Selecionar Id</TableHead>
             <TableHead>Produtos</TableHead>
             <TableHead>Data</TableHead>
           </TableRow>
@@ -169,7 +170,7 @@ const Purchases = () => {
         <TableBody>
           {sales.map((sale) => (
             <TableRow key={sale.id}>
-              <TableCell>
+              <TableCell className="flex align-center">
                 <Checkbox
                   checked={selectedSale === sale.id}
                   onCheckedChange={() =>
@@ -178,6 +179,7 @@ const Purchases = () => {
                     )
                   }
                 />
+               <p className="ml-4">{sale.id}</p> 
               </TableCell>
               <TableCell>
                 <ul className="list-disc pl-4">
